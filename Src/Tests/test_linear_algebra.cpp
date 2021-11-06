@@ -15,6 +15,9 @@ void TestLinearAlgebra::init() {
 	testMul_2();
 	testMul_3();
 	testMul_4();
+	testTran_1();
+	testTran_2();
+	testTran_3();
 
 	printReport("Linear Algebra");
 }
@@ -159,5 +162,47 @@ void TestLinearAlgebra::testMul_4() {
 											
 	checkEqual( ref_C, C, 0.1, " ");
 }
+
+void TestLinearAlgebra::testTran_1() {
+	
+	vector<double> ref_A( { 1, 4, 7,
+													2, 5, 8,
+													3, 6, 2 } );
+	
+	vector<double> A( { 1, 2, 3,
+											4, 5, 6,
+											7, 8, 2 } );
+	tran( A, 3, 3 );
+	checkEqual( ref_A, A, 0.1, " ");
+
+}
+
+
+void TestLinearAlgebra::testTran_2() {
+	
+	vector<double> ref_A( { 1, 4, 7,
+													2, 5, 6 } );
+	
+	vector<double> A( { 1, 2,
+											4, 5,
+											7, 6, } );
+	tran( A, 3, 2 );
+	checkEqual( ref_A, A, 0.1, " ");
+}
+
+void TestLinearAlgebra::testTran_3() {
+	
+	vector<double> ref_A( { 1, 4, 7 } );
+	
+	vector<double> A( { 1,
+											4,
+											7, } );
+	tran( A, 3, 1 );
+	checkEqual( ref_A, A, 0.1, " ");
+}
+
+
+
+
 
 

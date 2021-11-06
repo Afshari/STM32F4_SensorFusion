@@ -838,6 +838,11 @@
               <FileType>8</FileType>
               <FilePath>..\Src\Classes\recursive_least_squares.cpp</FilePath>
             </File>
+            <File>
+              <FileName>kf_tracking.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\Classes\kf_tracking.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -862,6 +867,11 @@
               <FileName>add.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Src\Math\add.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>linear_algebra.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\Math\linear_algebra.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -897,6 +907,11 @@
               <FileName>test_recursive_least_squares.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Src\Tests\test_recursive_least_squares.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>test_kf_tracking.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\Tests\test_kf_tracking.cpp</FilePath>
             </File>
           </Files>
         </Group>

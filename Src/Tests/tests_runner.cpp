@@ -21,6 +21,9 @@ void TestsRunner::run() {
 	TestRecursiveLeastSquares test_recursive_least_squares;
 	test_recursive_least_squares.init();
 	
+	TestKFTracking test_kf_tracking;
+	test_kf_tracking.init();
+	
 	while(1);
 
 }

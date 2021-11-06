@@ -19,6 +19,9 @@ public:
 	void testMul_2();
 	void testMul_3();
 	void testMul_4();
+	void testTran_1();
+	void testTran_2();
+	void testTran_3();
 
 };
 
