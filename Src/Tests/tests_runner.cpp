@@ -18,6 +18,8 @@ void TestsRunner::run() {
 	TestLinearAlgebra test_linear_algebra;
 	test_linear_algebra.init();
 
+	TestRecursiveLeastSquares test_recursive_least_squares;
+	test_recursive_least_squares.init();
 	
 	while(1);
 

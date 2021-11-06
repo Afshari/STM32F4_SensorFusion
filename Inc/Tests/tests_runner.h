@@ -5,6 +5,7 @@
 #include "Tests/test_input_parser.h"
 #include "Tests/test_network_data_handler.h"
 #include "Tests/test_linear_algebra.h"
+#include "Tests/test_recursive_least_squares.h"
 
 
 class TestsRunner {
