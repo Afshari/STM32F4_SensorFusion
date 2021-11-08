@@ -843,31 +843,16 @@
               <FileType>8</FileType>
               <FilePath>..\Src\Classes\kf_tracking.cpp</FilePath>
             </File>
+            <File>
+              <FileName>kf_passive_suspension.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\Classes\kf_passive_suspension.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Middlewares/Math</GroupName>
           <Files>
-            <File>
-              <FileName>scale.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Src\Math\scale.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>sub.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Src\Math\sub.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>mul.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Src\Math\mul.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>add.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Src\Math\add.cpp</FilePath>
-            </File>
             <File>
               <FileName>linear_algebra.cpp</FileName>
               <FileType>8</FileType>
@@ -912,6 +897,11 @@
               <FileName>test_kf_tracking.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Src\Tests\test_kf_tracking.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>test_kf_passive_suspension.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\Tests\test_kf_passive_suspension.cpp</FilePath>
             </File>
           </Files>
         </Group>

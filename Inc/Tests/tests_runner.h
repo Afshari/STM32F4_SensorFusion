@@ -7,7 +7,7 @@
 #include "Tests/test_linear_algebra.h"
 #include "Tests/test_recursive_least_squares.h"
 #include "Tests/test_kf_tracking.h"
-
+#include "Tests/test_kf_passive_suspension.h"
 
 class TestsRunner {
 

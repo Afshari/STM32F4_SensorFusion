@@ -8,6 +8,9 @@
 
 #include "app.h"
 #include "input_parser.h"
+#include "kf_tracking.h"
+#include "recursive_least_squares.h"
+#include "kf_passive_suspension.h"
 
 using std::unique_ptr;
 using std::make_unique;
@@ -21,6 +24,10 @@ public:
 
 
 protected:
+	unique_ptr<InputParser>   					input_parser;
+	unique_ptr<KFTracking> 							kf_gps_tracking;
+	unique_ptr<RecursiveLeastSquares> 	rls;
+	unique_ptr<KFPassiveSuspension> 		kf_passive_suspension;
 
 };
 

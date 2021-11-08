@@ -94,33 +94,11 @@ int main(void)
   
   osThreadCreate (osThread(Start), NULL);
   
-  
-  /* -1- Enable GPIO Clock (to be able to program the configuration registers) */
-  LED1_GPIO_CLK_ENABLE();
-  LED2_GPIO_CLK_ENABLE();
-
-  /* -2- Configure IO in output push-pull mode to drive external LEDs */
-  GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull  = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-
-  GPIO_InitStruct.Pin = LED1_PIN;
-  HAL_GPIO_Init(LED1_GPIO_PORT, &GPIO_InitStruct);
-  GPIO_InitStruct.Pin = LED2_PIN;
-  HAL_GPIO_Init(LED2_GPIO_PORT, &GPIO_InitStruct);
-  
   /* Start scheduler */
   osKernelStart();
 
   /* -3- Toggle IO in an infinite loop */
-  while (1)
-  {
-    HAL_GPIO_TogglePin(LED1_GPIO_PORT, LED1_PIN);
-    /* Insert delay 100 ms */
-    HAL_Delay(100);
-    HAL_GPIO_TogglePin(LED2_GPIO_PORT, LED2_PIN);
-    /* Insert delay 100 ms */
-    HAL_Delay(100);
+  while (1) {
   }
 }
 

@@ -51,10 +51,11 @@ void KFTracking::initialize(const std::vector<double> &params) {
 	//		  	[0, 				(dt**4)/4, 		 0, 			(dt**3)/2],
 	//	      [(dt**3)/2, 		0, 				 dt**2, 		 0],
 	//	      [0, 				(dt**3)/2, 		 0, 	 		 dt**2]]) * std_acc**2
-	float32_t t_Q[] = {  std::pow(this->dt, 4)/4, 	0,							std::pow(this->dt, 3)/2,	0,
-					 	 0,							std::pow(this->dt, 4)/4,	0,							std::pow(this->dt, 3)/2,
-						 std::pow(this->dt, 3)/2,	0,							std::pow(this->dt, 2),		0,
-						 0,							std::pow(this->dt, 3)/2, 	0, 							std::pow(this->dt, 2) 	};
+	float32_t t_Q[] = {   
+		(float)pow(this->dt, 4)/4, 	0,														(float)pow(this->dt, 3)/2,		0,
+		0,													(float)pow(this->dt, 4)/4,		0,														(float)pow(this->dt, 3)/2,
+		(float)pow(this->dt, 3)/2,	0,														(float)pow(this->dt, 2),			0,
+		0,													(float)pow(this->dt, 3)/2, 		0, 														(float)pow(this->dt, 2) 	};
 	std::copy(std::begin(t_Q), std::end(t_Q), std::begin(this->Q_f32));
 	arm_mat_init_f32(&this->Q, 4, 4, (float32_t *)this->Q_f32);
 	arm_mat_scale_f32(&this->Q, std::pow(process_noise, 2), &this->Q);
@@ -63,8 +64,8 @@ void KFTracking::initialize(const std::vector<double> &params) {
 
 	//	R = [x_std_meas**2,		0],
 	//	    [0, 				y_std_meas**2]])
-	float32_t t_R[] = {  std::pow(std_x, 2),  	0,
-					 	 0,						std::pow(std_y, 2)	};
+	float32_t t_R[] = {  (float)pow(std_x, 2),  	0,
+					 	 0,				 (float)pow(std_y, 2)	};
 	std::copy(std::begin(t_R), std::end(t_R), std::begin(this->R_f32));
 	arm_mat_init_f32(&this->R, 2, 2, (float32_t *)this->R_f32);
 
@@ -113,7 +114,7 @@ void KFTracking::predict() {
 }
 
 
-void KFTracking::update(const vector<float> &t_z) {
+void KFTracking::update(const vector<double> &t_z) {
 
 	arm_matrix_instance_f32 S;
 	arm_matrix_instance_f32 HP;
@@ -208,9 +209,9 @@ void KFTracking::update(const vector<float> &t_z) {
 }
 
 
-shared_ptr<vector<float>> KFTracking::getX() {
+shared_ptr<vector<double>> KFTracking::getX() {
 
-	shared_ptr<vector<float>> result = make_shared<vector<float>>();
+	shared_ptr<vector<double>> result = make_shared<vector<double>>();
 	result->push_back(x.pData[0]);
 	result->push_back(x.pData[1]);
 	result->push_back(x.pData[2]);

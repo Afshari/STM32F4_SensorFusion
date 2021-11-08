@@ -52,7 +52,7 @@ void TestInputParser::testGetIndices() {
 void TestInputParser::testGetDataVector() {
 
 
-	vector<float> values = *inputParser.getDataVector("101:100,150", 4, 7);
+	vector<double> values = *inputParser.getDataVector("101:100,150", 4, 7);
 
 	checkEqual(values[0], 100, 1e-4);
 	checkEqual(values[1], 150, 1e-4);

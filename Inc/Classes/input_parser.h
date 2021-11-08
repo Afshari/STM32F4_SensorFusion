@@ -22,7 +22,7 @@ public:
 	virtual int getCode(const string &data);
 	virtual bool trim(string &data);
 	virtual shared_ptr<vector<int>> getIndices(const string& data, const string& delimiter);
-	virtual shared_ptr<vector<float>> getDataVector(const string& data, int start_index, int len);
+	virtual shared_ptr<vector<double>> getDataVector(const string& data, int start_index, int len);
 	virtual shared_ptr<vector<double>> getVector4d(const string &data);
 
 };

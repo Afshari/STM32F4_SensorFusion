@@ -24,6 +24,9 @@ void TestsRunner::run() {
 	TestKFTracking test_kf_tracking;
 	test_kf_tracking.init();
 	
+	TestKFPassiveSuspension test_kf_passive_suspnsion;
+	test_kf_passive_suspnsion.init();
+	
 	while(1);
 
 }

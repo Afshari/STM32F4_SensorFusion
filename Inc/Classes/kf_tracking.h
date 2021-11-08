@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <cmath>
 #include "app.h"
 
 #ifndef GTEST

@@ -57,12 +57,12 @@ bool InputParser::trim(string &data) {
 }
 
 
-shared_ptr<vector<float>> InputParser::getDataVector(const string& data, int start_index, int len) {
+shared_ptr<vector<double>> InputParser::getDataVector(const string& data, int start_index, int len) {
 
     string token = data.substr(start_index, len);
     auto indices = getIndices(token, ",");
 
-    shared_ptr<vector<float>> state = make_shared<vector<float>>(); // (indices->size());
+    shared_ptr<vector<double>> state = make_shared<vector<double>>(); // (indices->size());
     state->resize(indices->size());
 
     string currState = "";
