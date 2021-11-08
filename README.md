@@ -10,12 +10,11 @@
 
 ### Tools & Libraries
 ~~~
-IDE :  STM32CubeIDE
-Compiler :  ARM GCC
+IDE :  Keil uVision 5
 RTOS :  FreeRTOS
-Programming Language : 	C++ 17
+Programming Language : 	C++ 14
 Library : ARM CMSIS DSP
-Library : Embedded Lapack 				
+Library : LwIP for Socket Programming		
 ~~~
 
 
