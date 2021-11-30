@@ -5,6 +5,7 @@
 #include <cmath>
 #include <algorithm>
 #include <memory>
+#include <array>
 #include <vector>
 #include "app.h"
 
@@ -15,10 +16,11 @@
 #ifdef USE_CMSIS_DSP
 #include "arm_math.h"
 #else
-#include "linalg.h"
+#include "matrix.h"
 #endif
 
 using std::string;
+using std::array;
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;
@@ -44,11 +46,37 @@ private:
 	arm_matrix_instance_f32 R;
 	arm_matrix_instance_f32 P;
 
-	float32_t x_f32[2*1];
-	float32_t H_f32[1*2];
-	float32_t y_f32[1*1];
-	float32_t R_f32[1*1];
-	float32_t P_f32[2*2];
+	array<float32_t, 2*1> x_f32;
+	array<float32_t, 1*2> H_f32;
+	array<float32_t, 1*1> y_f32;
+	array<float32_t, 1*1> R_f32;
+	array<float32_t, 2*2> P_f32;
+
+	arm_matrix_instance_f32 S;
+	arm_matrix_instance_f32 SI;
+	arm_matrix_instance_f32 HP;
+	arm_matrix_instance_f32 HT;
+	arm_matrix_instance_f32 HPHT;
+	arm_matrix_instance_f32 PHT;
+	arm_matrix_instance_f32 K;
+	arm_matrix_instance_f32 Hx;
+	arm_matrix_instance_f32 yHx;
+	arm_matrix_instance_f32 KyHx;
+	arm_matrix_instance_f32 I;
+	arm_matrix_instance_f32 KH;
+	arm_matrix_instance_f32 IKH;
+
+	array<float32_t, 1*1> S_f32;
+	array<float32_t, 1*2> HP_f32;
+	array<float32_t, 2*1> HT_f32;
+	array<float32_t, 1*1> HPHT_f32;
+	array<float32_t, 2*1> PHT_f32;
+	array<float32_t, 2*1> K_f32;
+	array<float32_t, 1*1> Hx_f32;
+	array<float32_t, 1*1> yHx_f32;
+	array<float32_t, 2*1> KyHx_f32;
+	array<float32_t, 2*2> KH_f32;
+	array<float32_t, 2*2> IKH_f32;
 
 	float32_t init_11[1*1] = { 	0 };
 
@@ -66,11 +94,9 @@ private:
 #else
 								
 private:
-	vector<double> x;
-	vector<double> R;
-	vector<double> P;
-
-
+	Matrix x { 1, 1 };
+	Matrix R { 1, 1 };
+	Matrix P { 1, 1 };
 
 #endif
 

@@ -83,33 +83,29 @@ void TestKFPassiveSuspension::testInitialize() {
 	KFPassiveSuspension kf_passive_suspension;
 	kf_passive_suspension.initialize();
 
-	vector<double> x = { 0, 0, 0, 0 };
+	Matrix x { 4, 1, { 0, 0, 0, 0 } };
 
+	Matrix H { 1, 4, { 1, 0, 0, 0 } };
 
-	vector<double> H = { 1, 0, 0, 0 };
+	Matrix R { 1, 1, { 1e-6 } };
 
-	vector<double> R = { 1e-6 };
+	Matrix P { 4, 4, {
+									 1,     	0,      0,      0,
+									 0,     	1,      0,      0,
+									 0,     	0,      1,      0,
+									 0,     	0,      0,      1 } };
 
-	vector<double> P = {
-						 1,     	0,      0,      0,
-             0,     	1,      0,      0,
-             0,     	0,      1,      0,
-             0,     	0,      0,      1 };
+	Matrix F { 4, 4, {
+									 0.9998,    0.0004,    0.0010,   -0.0010,
+									 0.0002,    0.9996,    0.0000,    0.0010,
+									-0.0437,   -0.0005,    0.9989,    0.0011,
+									 0.3739,   -0.8856,    0.0098,    0.9897 	} };
 
-
-	vector<double> F = {
-		   0.9998,    0.0004,    0.0010,   -0.0010,
-		   0.0002,    0.9996,    0.0000,    0.0010,
-		  -0.0437,   -0.0005,    0.9989,    0.0011,
-		   0.3739,   -0.8856,    0.0098,    0.9897 	};
-
-
-	vector<double> Q = {
-		   0.0000,    0.0000,   -0.0000,   -0.0000,
-		   0.0000,    0.2233,   -0.0001,   -0.1276,
-		  -0.0000,   -0.0001,    0.0000,    0.0000,
-		  -0.0000,   -0.1276,    0.0000,    0.0875 	};
-
+	Matrix Q { 4, 4, {
+									 0.0000,    0.0000,   -0.0000,   -0.0000,
+									 0.0000,    0.2233,   -0.0001,   -0.1276,
+									-0.0000,   -0.0001,    0.0000,    0.0000,
+									-0.0000,   -0.1276,    0.0000,    0.0875 	} };
 
 	status = checkEqual(kf_passive_suspension.x, x, matrixTolerance, "");
 	status = checkEqual(kf_passive_suspension.H, H, matrixTolerance, "");

@@ -16,7 +16,7 @@
 #ifdef USE_CMSIS_DSP
 #include "arm_math.h"
 #else
-#include "linalg.h"
+#include "matrix.h"
 #endif
 
 
@@ -79,13 +79,13 @@ private:
 #else
 
 private:
-	vector<double> x;
-	vector<double> H;
-	vector<double> Q;
-	vector<double> R;
-	vector<double> P;
-	vector<double> I;
-	vector<double> A;
+	Matrix x { 1, 1 };
+	Matrix H { 1, 1 };
+	Matrix Q { 1, 1 };
+	Matrix R { 1, 1 };
+	Matrix P { 1, 1 };
+	Matrix I { 1, 1 };
+	Matrix A { 1, 1 };
 
 #endif
 

@@ -18,7 +18,7 @@
 #ifdef USE_CMSIS_DSP
 #include "arm_math.h"
 #else
-#include "linalg.h"
+#include "matrix.h"
 #endif
 
 using std::string;
@@ -111,14 +111,14 @@ private:
 
 #else
 
-		vector<double>  x;
-    vector<double>  P;
-    vector<double>  F;
-    vector<double>  H;
-    vector<double>  Q;
-    vector<double>  R;
-    vector<double> HT;
-    vector<double> _I;
+		Matrix  x 	{ 1, 1 };
+    Matrix  P 	{ 1, 1 };
+    Matrix  F 	{ 1, 1 };
+    Matrix  H 	{ 1, 1 };
+    Matrix  Q 	{ 1, 1 };
+    Matrix  R 	{ 1, 1 };
+    Matrix  HT 	{ 1, 1 };
+    Matrix  I 	{ 1, 1 };
 
 #endif
 

@@ -4,7 +4,7 @@
 
 #include <assert.h>
 #include "Tests/test_base.h"
-#include "linalg.h"
+#include "matrix.h"
 
 class TestLinearAlgebra : public TestBase {
 
@@ -14,7 +14,8 @@ public:
 	void init();
 	void testAdd();
 	void testSub();
-	void testScale();
+	void testScale_1();
+	void testScale_2();
 	void testMul_1();
 	void testMul_2();
 	void testMul_3();

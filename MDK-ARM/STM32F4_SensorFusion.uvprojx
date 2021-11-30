@@ -854,9 +854,9 @@
           <GroupName>Middlewares/Math</GroupName>
           <Files>
             <File>
-              <FileName>linear_algebra.cpp</FileName>
+              <FileName>matrix.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\Src\Math\linear_algebra.cpp</FilePath>
+              <FilePath>..\Src\Math\matrix.cpp</FilePath>
             </File>
           </Files>
         </Group>

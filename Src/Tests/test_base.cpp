@@ -165,6 +165,32 @@ bool TestBase::checkEqual(const vector<double> &value1, const vector<double> &va
 	return isEqual;
 }
 
+bool TestBase::checkEqual(const Matrix &value1, const Matrix &value2, float tolerance, string msg) {
+	
+	bool isEqual = true;
+
+	if(value1.columnSize() != value2.columnSize() || value1.rowSize() != value2.rowSize())
+		isEqual = false;
+
+	for(int i = 0; i < value1.rowSize(); i++) {
+			for(int j = 0; j < value1.columnSize(); j++) {
+				if( std::abs( value1.at(i, j) - value2.at(i, j) ) > tolerance ) {
+					isEqual = false;
+					break;
+				}
+			}
+	}
+
+	if(isEqual) success += 1;
+	else {
+		failure += 1;
+		printf("FAILURE: %s\r\n", msg.c_str());
+	}
+
+
+	return isEqual;
+}
+
 #ifdef USE_CMSIS_DSP
 bool TestBase::checkEqualArmMatrix(arm_matrix_instance_f32 value1, arm_matrix_instance_f32 value2, float tolerance, std::string msg) {
 
