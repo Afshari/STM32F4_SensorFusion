@@ -33,7 +33,7 @@ public:
 	virtual void initialize(const vector<double> &params);
 	virtual void predict();
 	virtual void update(const vector<double> &z);
-	virtual shared_ptr<vector<double>> getX();
+	virtual Matrix getX();
 
 private:
 	float dt;

@@ -39,7 +39,7 @@ public:
 	virtual void initialize();
 	virtual void predict();
 	virtual void update(const double &param);
-	virtual shared_ptr<vector<double>> getX();
+	virtual Matrix getX();
 
 
 private:

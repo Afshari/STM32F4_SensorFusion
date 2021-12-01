@@ -115,7 +115,7 @@ static void SystemClock_Config(void)
   
   if(HAL_PWREx_EnableOverDrive() != HAL_OK)
   {
-   while(1) {};
+    while(1) {};
   }
   
   /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 

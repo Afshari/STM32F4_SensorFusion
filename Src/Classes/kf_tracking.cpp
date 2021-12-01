@@ -221,13 +221,9 @@ shared_ptr<vector<double>> KFTracking::getX() {
 
 #else
 
-shared_ptr<std::vector<double>> KFTracking::getX() {
+Matrix KFTracking::getX() {
 
-	return make_shared<vector<double>>( x.at(0, 0), x.at(1, 0) );
-	//	shared_ptr<vector<double>> result = make_shared<vector<double>>();
-	//	result->push_back(x[0]);
-	//	result->push_back(x[1]);
-	//	return result;
+	return x;
 }
 
 void KFTracking::initialize(const vector<double> &params) {
@@ -241,9 +237,6 @@ void KFTracking::initialize(const vector<double> &params) {
 
 	this->dt = dt;
 
-	//	x = [init_x, init_y, 0, 0]
-	//	double t_x[] = { init_x, init_y, 0, 0 };
-	//	std::copy(std::begin(t_x), std::end(t_x), std::begin(this->x));
 	this->x = { 4, 1, { init_x, 
 											init_y, 
 											0, 
@@ -253,13 +246,9 @@ void KFTracking::initialize(const vector<double> &params) {
 											 0, 1, 0, 		 		this->dt,
 											 0, 0, 1, 		 		0,
 											 0, 0, 0,		 			1 } };
-	// std::copy(std::begin(t_A), std::end(t_A), std::begin(this->A));
-
 
 	this->H = { 2, 4, { 1, 0, 0, 0,
 											0, 1, 0, 0 } };
-	// std::copy(std::begin(t_H), std::end(t_H), std::begin(this->H));
-
 
 	//	Q =	  [(dt^4)/4, 		0, 						 (dt^3)/2, 		 0],
 	//		  	[0, 				  (dt^4)/4, 		 0, 					 (dt^3)/2],
@@ -269,89 +258,42 @@ void KFTracking::initialize(const vector<double> &params) {
 											 0,													std::pow(this->dt, 4)/4,	0,												std::pow(this->dt, 3)/2,
 											 std::pow(this->dt, 3)/2,		0,												std::pow(this->dt, 2),		0,
 											 0,													std::pow(this->dt, 3)/2, 	0, 												std::pow(this->dt, 2) 	} };
-	//	std::copy(std::begin(t_Q), std::end(t_Q), std::begin(this->Q));
 	Q = Q * std::pow(process_noise, 2);
-	// scale(Q, std::pow(process_noise, 2), 4, 4);
-	// arm_mat_scale_f32(&this->Q, std::pow(process_noise, 2), &this->Q);
-
 
 	//	R = [x_std_meas**2,		0],
 	//	    [0, 				y_std_meas**2]])
 	this->R = { 2, 2, { std::pow(std_x, 2),  	0,
 											0,										std::pow(std_y, 2) }	};
-	// R = { t_R, 2, 2 };
-	// std::copy(std::begin(t_R), std::end(t_R), std::begin(this->R));
-	//	arm_mat_init_f32(&this->R, 2, 2, (float32_t *)this->R_f32);
 
-
-	//	P = eye(4, 4);
 	this->P = { 4, 4, { 1, 0, 0, 0,
 											0, 1, 0, 0,
 											0, 0, 1, 0,
 											0, 0, 0, 1 } };
-	// std::copy(std::begin(t_P), std::end(t_P), std::begin(this->P));
-
 	// I = eye(4, 4);
 	this->I = { 4, 4, {  1, 0, 0, 0,
 											 0, 1, 0, 0,
 											 0, 0, 1, 0,
 											 0, 0, 0, 1 } };
-	// std::copy(std::begin(t_I), std::end(t_I), std::begin(this->I));
-
 }
 
 
 void KFTracking::predict() {
 
 	// x = A @ x
-	// vector<double> C_x( 4 * 1 );
-	// std::copy(std::begin(x), std::end(x), std::begin(C_x));
-	// mul(A, C_x, x, 4, 4, 1);
-	this->x = this->A * this->x;
-
+	x = A * x;
 
 	// P = A @ P @ A.T + Q
-	this->P = this->A * this->P * this->A.transpose() + this->Q;
-	//	vector<double> AT( 4 * 4 );
-	//	vector<double> AP( 4 * 4 );
-	//	vector<double> APAT( 4 * 4 );
-
-
-	// AT = A.transpose()
-	//	std::copy(std::begin(A), std::end(A), std::begin(AT));
-	//	tran(AT, 4, 4);
-
-	//	mul(A, P, AP, 4, 4, 4);
-	//	mul(AP, AT, APAT, 4, 4, 4);
-	//	add(APAT, Q, P, 4, 4);
-
+	P = A * P * A.transpose() + Q;
 }
 
 
 void KFTracking::update(const vector<double> &t_z) {
 
-	//	vector<double> S( 2 * 2 );
-	//	vector<double> HP( 2 * 4 );
-	//	vector<double> HT( 4 * 2 );
-	//	vector<double> HPHT( 2 * 2 );
-	//	vector<double> PHT( 4 * 2 );
-	//	vector<double> K( 4 * 2 );
-	//	vector<double> Hx( 2 * 1 );
-	//	vector<double> zHx( 2 * 1 );
-	//	vector<double> KzHx( 4 * 1 );
-	//	vector<double> KH( 4 * 4 );
-	//	vector<double> IKH( 4 * 4 );
-
-
-	//	HT = H.transpose()
-	//	std::copy(std::begin(H), std::end(H), std::begin(HT));
-	//	tran(HT, 2, 4);
-
+	Matrix z { 2, 1, {  t_z.at(0), 
+											t_z.at(1) } };
+	
 	// S = H @ P @ H.T + R
 	Matrix S = H * P * H.transpose() + R;
-	//	mul(H, P, HP, 2, 4, 4);
-	//	mul(HP, HT, HPHT, 2, 4, 2);
-	//	add(HPHT, R, S, 2, 2);
 
 	// Inverse of S
 	double a = S.at(0, 0);
@@ -363,33 +305,17 @@ void KFTracking::update(const vector<double> &t_z) {
 	Matrix SI { 2, 2, { d, -b, 
 										 -c, a } };
 	SI = SI * det;
-	// scale(SI, det, 2, 2);
 
-	//	// K = P @ H.T @ inv(S)
+										 
+	// K = P @ H.T @ inv(S)
 	Matrix K = P * H.transpose() * SI;
-	//	mul(P, HT, PHT, 4, 4, 2);
-	//	mul(PHT, SI, K, 4, 2, 2);
 
-
+										 
 	// x = x + K @ (z - H @ x)
-	Matrix z { 2, 1, {  t_z.at(0), 
-											t_z.at(1) } };
 	x = x + K * ( z - H * x );
-	//	vector<double> C_x( 4 * 1 );
-	//	std::copy(std::begin(x), std::end(x), std::begin(C_x));
-	//	vector<double> z = { t_z.at(0), t_z.at(1) };
-	//	mul(H, x, Hx, 2, 4, 1);
-	//	sub(z, Hx, zHx, 2, 1);
-	//	mul(K, zHx, KzHx, 4, 2, 1);
-	//	add(C_x, KzHx, x, 4, 1);
 
 	// P = (I - (K @ H)) @ P
 	P = ( I - (K * H) ) * P;
-	//	vector<double> C_P( 4 * 4 );
-	//	std::copy(std::begin(P), std::end(P), std::begin(C_P));
-	//	mul(K, H, KH, 4, 2, 4);
-	//	sub(I, KH, IKH, 4, 4);
-	//	mul(IKH, C_P, P, 4, 4, 4);
 
 }
 

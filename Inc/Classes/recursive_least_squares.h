@@ -30,7 +30,7 @@ class RecursiveLeastSquares {
 public:
 	RecursiveLeastSquares();
 
-	virtual shared_ptr<vector<double>> getX();
+	virtual Matrix getX();
 	virtual void initialize(const vector<double> &params);
 	virtual void calculate (const vector<double> &params);
 

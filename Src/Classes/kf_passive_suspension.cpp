@@ -195,80 +195,33 @@ void KFPassiveSuspension::update(const double &param) {
 
 #else
 
-shared_ptr<vector<double>> KFPassiveSuspension::getX() {
+Matrix KFPassiveSuspension::getX() {
 
-	vector<double> result { x.at(0, 0), x.at(1, 0), x.at(2, 0), x.at(3, 0) };
-	return make_shared<vector<double>>( result );
-	// return make_shared<vector<double>>( x.at(0, 0), x.at(1, 0), x.at(2, 0), x.at(3, 0) );
-	//	shared_ptr<vector<double>> result = make_shared<vector<double>>();
-	//	result->push_back(x[0]);
-	//	result->push_back(x[1]);
-	//	result->push_back(x[2]);
-	//	result->push_back(x[3]);
-	//	return result;
+	return this->x;
 }
 
 void KFPassiveSuspension::initialize() {
 
-	//	x.resize( 4 * 1 );
-	//	P.resize( 4 * 4 );
-	//	F.resize( 4 * 4 );
-	//	H.resize( 1 * 4 );
-	//	Q.resize( 4 * 4 );
-	//	R.resize( 1 * 1 );
-	//	HT.resize( 4 * 1 );
-	//	_I.resize( 4 * 4 );
-
-	//	double t_x[] = { 0, 0, 0, 0 };
-	//	std::copy(std::begin(t_x), std::end(t_x), std::begin(this->x));
 	x = { 4, 1, { 0,
 								0,
 								0,
 								0 } };
 
-	//	double t_H[] = { 1, 0, 0, 0 };
-	//	std::copy(std::begin(t_H), std::end(t_H), std::begin(this->H));
-	//	std::copy(std::begin(t_H), std::end(t_H), std::begin(this->HT));
 	H = { 1, 4, { 1, 0, 0, 0 } };
-								
-
-	//	double t_R[] = { 1e-6 };
-	//	std::copy(std::begin(t_R), std::end(t_R), std::begin(this->R));
 	R = { 1, 1, { 1e-6 } };
 
-	
-	//	double t_P[] = {
-	//						 1,     	0,      0,      0,
-	//             0,     	1,      0,      0,
-	//             0,     	0,      1,      0,
-	//             0,     	0,      0,      1 };
-	//	std::copy(std::begin(t_P), std::end(t_P), std::begin(this->P));
 	P = { 4, 4, {
 						 1,     	0,      0,      0,
              0,     	1,      0,      0,
              0,     	0,      1,      0,
              0,     	0,      0,      1 } };
 
-
-	//	double t_F[] = {
-	//		   0.9998,    0.0004,    0.0010,   -0.0010,
-	//		   0.0002,    0.9996,    0.0000,    0.0010,
-	//		  -0.0437,   -0.0005,    0.9989,    0.0011,
-	//		   0.3739,   -0.8856,    0.0098,    0.9897 	};
-	//	std::copy(std::begin(t_F), std::end(t_F), std::begin(this->F));
 	F = { 4, 4, {
 							 0.9998,    0.0004,    0.0010,   -0.0010,
 							 0.0002,    0.9996,    0.0000,    0.0010,
 							-0.0437,   -0.0005,    0.9989,    0.0011,
 							 0.3739,   -0.8856,    0.0098,    0.9897 	} };
 
-
-	//	double t_Q[] = {
-	//		   0.0000,    0.0000,   -0.0000,   -0.0000,
-	//		   0.0000,    0.2233,   -0.0001,   -0.1276,
-	//		  -0.0000,   -0.0001,    0.0000,    0.0000,
-	//		  -0.0000,   -0.1276,    0.0000,    0.0875 	};
-	//	std::copy(std::begin(t_Q), std::end(t_Q), std::begin(this->Q));
 	Q = { 4, 4, {
 						 0.0000,    0.0000,   -0.0000,   -0.0000,
 						 0.0000,    0.2233,   -0.0001,   -0.1276,
@@ -285,85 +238,33 @@ void KFPassiveSuspension::initialize() {
 
 void KFPassiveSuspension::predict() {
 
-	//	vector<double> C_x( 4 * 1 );
-	//	std::copy(std::begin(x), std::end(x), std::begin(C_x));
-
 	// x = F @ x
-	//	mul(F, C_x, x, 4, 4, 1);
 	x = F * x;
 
   // P = F @ P @ F.T + Q
 	P = F * Q * F.transpose() + Q;
-	//	vector<double> FT( 4 * 4 );
-	//	vector<double> FP( 4 * 4 );
-	//	vector<double> FPFT( 4 * 4 );
-
-	// FT = F.transpose()
-	//	std::copy(std::begin(F), std::end(F), std::begin(FT));
-	//	tran(FT, 4, 4);
-
-	//	mul(F, P, FP, 4, 4, 4);
-	//	mul(FP, FT, FPFT, 4, 4, 4);
-	//	add(FPFT, Q, P, 4, 4);
-	
 }
 
 void KFPassiveSuspension::update(const double &param) {
 
-	// I = eye(4, 4);
-	//	vector<double> I = {   
-	//									 1, 0, 0, 0,
-	//									 0, 1, 0, 0,
-	//									 0, 0, 1, 0,
-	//									 0, 0, 0, 1 };
-
-	//	vector<double> S( 1 * 1 );
-	//	vector<double> HP( 1 * 4 );
-	//	vector<double> HPHT( 1 * 1 );
-	//	vector<double> PHT( 4 * 1 );
-	//	vector<double> K( 4 * 1 );
-	//	vector<double> Hx( 1 * 1 );
-	//	vector<double> zHx( 1 * 1 );
-	//	vector<double> KzHx( 4 * 1 );
-	//	vector<double> KH( 4 * 4 );
-	//	vector<double> IKH( 4 * 4 );
-
-
 	// S = H @ P @ H.T + R
 	Matrix S = H * P * H.transpose() + R;
-	//	mul(H, P, HP, 1, 4, 4);
-	//	mul(HP, HT, HPHT, 1, 4, 1);
-	//	add(HPHT, R, S, 1, 1);
 
 	// K = P @ H.T @ inv(S)
-	Matrix SI = { 1, 1, { S.at(0, 0) } };
+	Matrix SI{ 1, 1, { 0 } };
+	if(S.at(0, 0) == 0)
+		SI = { 1, 1, { 1 } };
+	else
+		SI = { 1, 1, { 1/S.at(0, 0) } };
 	Matrix K = P * H.transpose() * SI;
-	//	vector<double> SI = { 1/S[0] };
-	//	mul(P, HT, PHT, 4, 4, 1);
-	//	mul(PHT, SI, K, 4, 1, 1);
 
-	// DebugSWV::print_debug("S: %.7f and SI: %.2f\r\n", S[0], SI[0]);
-
-	//	vector<double> C_x( 4 * 1 );
-	//	std::copy(std::begin(x), std::end(x), std::begin(C_x));
-	// x = x + K @ (z - H @ x)
 	Matrix z { 1, 1, { param } };
+	
+	// x = x + K @ (z - H @ x)
 	x = x + K * ( z - H * x );
-	//	vector<double> z = { param };
-	//	mul(H, x, Hx, 1, 4, 1);
-	//	sub(z, Hx, zHx, 1, 1);
-	//	mul(K, zHx, KzHx, 4, 1, 1);
-	//	add(C_x, KzHx, x, 4, 1);
-
-	//	vector<double> C_P( 4 * 4 );
-	//	std::copy(std::begin(P), std::end(P), std::begin(C_P));
 
 	// P = (I - (K @ H)) @ P
 	P = ( I - (K * H) ) * P;
-	//	mul(K, H, KH, 4, 1, 4);
-	//	sub(I, KH, IKH, 4, 4);
-	//	mul(IKH, C_P, P, 4, 4, 4);
-
 }
 
 

@@ -95,13 +95,11 @@ void TestRecursiveLeastSquares::testInitialize() {
 	vector<double> data = { 8, 7, 0.1 };
 	rls.initialize(data);
 
-
 	Matrix x { 2, 1, { 8, 7 } };
 	status = checkEqual(rls.x, x, matrixTolerance, "There is Problem in Recursive Least Squares initialize() Function -- x Value");
 
 	Matrix R { 1, 1, { 0.1 } };
 	status = checkEqual(rls.R, R, matrixTolerance, "There is Problem in Recursive Least Squares initialize() Function -- R Value");
-
 
 	Matrix P { 2, 2, { 1, 0,
 										 0, 1 } };
@@ -110,22 +108,27 @@ void TestRecursiveLeastSquares::testInitialize() {
 
 void TestRecursiveLeastSquares::testCalculate() {
 
+	Matrix ref_x { 2, 1, { 7.94839, 6.9164 } };
+	
 	bool status = false;
 	float matrixTolerance = 0.01;
 
 	vector<double> data = { 8, 7, 0.1 };
 	rls.initialize(data);
 
-	//	double x[] = { 7.890, 6.970 };
-	//	std::copy(std::begin(x), std::end(x), std::begin(rls.x));
+	Matrix x { 2, 1, { 7.872127, 6.96022 } };
+	Matrix P { 2, 2, { 	0.48108, 	-0.48654,
+											-0.48654, 0.50502 } };
+	
+	rls.x = x;
+	rls.P = P;
 
-	//	double P[] = {  0.49766082, -0.49248969, -0.49248969,  0.50736237 };
-	//	std::copy(std::begin(P), std::end(P), std::begin(rls.P));
-
-
-	float arr_parm[] = { 1, 0.932065, 14.6714 };
 	vector<double> parm = { 1, 0.932065, 14.6714 };
 	rls.calculate(parm);
+	Matrix result_x = rls.getX();
+	
+	checkEqual(rls.x, ref_x, matrixTolerance, " ");
+	
 }
 
 #endif

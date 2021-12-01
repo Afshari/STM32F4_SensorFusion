@@ -107,20 +107,16 @@ void RecursiveLeastSquares::calculate(const vector<double> &params) {
 
 RecursiveLeastSquares::RecursiveLeastSquares() {
 
-	this->x = Matrix{ 2, 1, { 0, 0 } };
-	this->R = Matrix{ 1, 1, { 0 } };
+	x = Matrix{ 2, 1, { 0, 0 } };
+	R = Matrix{ 1, 1, { 0 } };
 
-	this->P = Matrix{ 2, 2, { 1, 0,
-														0, 1 } };
+	P = Matrix{ 2, 2, { 1, 0,
+											0, 1 } };
 }
 
-shared_ptr<vector<double>> RecursiveLeastSquares::getX() {
+Matrix RecursiveLeastSquares::getX() {
 
-	return make_shared<vector<double>>( x.at(0, 0), x.at(1, 0) );
-//	shared_ptr<vector<double>> result = make_shared<vector<double>>();
-//	result->push_back(this->x.at(0, 0));
-//	result->push_back(this->x.at(1, 0));
-//	return result;
+	return x;
 }
 
 void RecursiveLeastSquares::initialize(const vector<double> &params) {
@@ -129,11 +125,11 @@ void RecursiveLeastSquares::initialize(const vector<double> &params) {
 	float init_x_2 = params.at(1);
 	float init_R   = params.at(2);
 	
-	this->x = { 2, 1, { init_x_1, init_x_2 } };
-	this->R = { 1, 1, { init_R } };
+	x = { 2, 1, { init_x_1, init_x_2 } };
+	R = { 1, 1, { init_R } };
 
-	this->P = { 2, 2, { 1, 0,
-											0, 1 } };
+	P = { 2, 2, { 1, 0,
+								0, 1 } };
 
 }
 
@@ -145,20 +141,10 @@ void RecursiveLeastSquares::calculate(const vector<double> &params) {
 
 
 	Matrix H  = { 1, 2, { param_H_1, param_H_2 } };
-	// Matrix HT = { param_H_1, param_H_2 };
 	Matrix y  = { 1, 1, { param_y } };
-
-//	vector<double> PHT( 2 * 1 );
-//	vector<double> HP( 1 * 2 );
-//	vector<double> HPHT( 1 * 1 );
-//	vector<double> S( 1 * 1 );
-//	vector<double> K( 2 * 1 );
 
 	// S = H @ P @ H.T + R
 	Matrix S = H * P * H.transpose() + R;
-//	mul(H, P, HP, 1, 2, 2);
-//	mul(HP, HT, HPHT, 1, 2, 1);
-//	add(HPHT, R, S, 1, 1);
 
 	Matrix SI{ 1, 1, { 0 } };
 	if(S.at(0, 0) == 0)
@@ -168,29 +154,12 @@ void RecursiveLeastSquares::calculate(const vector<double> &params) {
 
 	// K = P @ H.T @ np.linalg.pinv(S)
 	Matrix K = P * H.transpose() * SI;
-//	mul(P, HT, PHT, 2, 2, 1);
-//	mul(PHT, SI, K, 2, 1, 1);
-
-
-//	vector<double> Hx( 1 * 1 );
-//	vector<double> yHx( 1 * 1 );
-//	vector<double> KyHx( 2 * 1 );
 
 	// x = x + K * (y - H @ x)
-		this->x = this->x + K * ( y - H * this->x );
-//	mul(H, x, Hx, 1, 2, 1);
-//	sub(y, Hx, yHx, 1, 1);
-//	mul(K, yHx, KyHx, 2, 1, 1);
-//	add(x, KyHx, x, 2, 1);
-
-//	vector<double> KH( 2 * 2 );
-//	vector<double> KHP( 2 * 2 );
+	x = x + K * ( y - H * x );
 
 	// P = P - K @ H @ P
-	this->P = this->P - K * H * this->P;
-//	mul(H, P, HP, 1, 2, 2);
-//	mul(K, HP, KHP, 2, 1, 2);
-//	sub(P, KHP, P, 2, 2);
+	P = P - K * H * P;
 
 }
 

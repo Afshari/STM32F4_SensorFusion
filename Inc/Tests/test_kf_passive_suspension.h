@@ -17,7 +17,8 @@ public:
 	void init();
 	void testInitialize();
 	void testPredict();
-	void testUpdate();
+	void testUpdate_1();
+	void testUpdate_2();
 	void testRun();
 
 };

@@ -18,14 +18,14 @@ void TestsRunner::run() {
 	TestLinearAlgebra test_linear_algebra;
 	test_linear_algebra.init();
 
-//	TestRecursiveLeastSquares test_recursive_least_squares;
-//	test_recursive_least_squares.init();
-//	
-//	TestKFTracking test_kf_tracking;
-//	test_kf_tracking.init();
-//	
-//	TestKFPassiveSuspension test_kf_passive_suspnsion;
-//	test_kf_passive_suspnsion.init();
+	TestRecursiveLeastSquares test_recursive_least_squares;
+	test_recursive_least_squares.init();
+	
+	TestKFTracking test_kf_tracking;
+	test_kf_tracking.init();
+	
+	TestKFPassiveSuspension test_kf_passive_suspnsion;
+	test_kf_passive_suspnsion.init();
 	
 	while(1);
 
