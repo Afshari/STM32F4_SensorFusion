@@ -17,9 +17,9 @@
 
 #ifdef USE_CMSIS_DSP
 #include "arm_math.h"
-#else
-#include "matrix.h"
 #endif
+
+#include "matrix.h"
 
 using std::string;
 using std::vector;
@@ -64,53 +64,6 @@ private:
 
     const float Qc_f = 4 * M_PI * Gqn0 * pow(n0, 2) * V;
 
-
-#ifdef USE_CMSIS_DSP
-
-	float32_t init_11[1*1] = { 	0 };
-
-	float32_t init_21[2*1] = { 	0,
-								0, };
-
-	float32_t init_22[2*2] = { 	0, 0,
-								0, 0  };
-
-	float32_t init_41[4*1] = { 	0,
-								0,
-								0,
-								0, };
-
-	float32_t init_42[4*2] = { 	0, 0,
-								0, 0,
-								0, 0,
-								0, 0  };
-
-	float32_t init_44[4*4] = { 	0, 0, 0, 0,
-								0, 0, 0, 0,
-								0, 0, 0, 0,
-								0, 0, 0, 0  };
-
-    arm_matrix_instance_f32 x;
-    arm_matrix_instance_f32 P;
-    arm_matrix_instance_f32 F;
-    arm_matrix_instance_f32 H;
-    arm_matrix_instance_f32 Q;
-    arm_matrix_instance_f32 Qc;
-    arm_matrix_instance_f32 R;
-    arm_matrix_instance_f32 _I;
-
-
-    float32_t x_f32[4*1];
-    float32_t P_f32[4*4];
-    float32_t F_f32[4*4];
-    float32_t H_f32[1*4];
-    float32_t Q_f32[4*4];
-    float32_t R_f32[1*1];
-    float32_t _I_f32[4*4];
-    
-
-#else
-
 		Matrix  x 	{ 1, 1 };
     Matrix  P 	{ 1, 1 };
     Matrix  F 	{ 1, 1 };
@@ -119,9 +72,6 @@ private:
     Matrix  R 	{ 1, 1 };
     Matrix  HT 	{ 1, 1 };
     Matrix  I 	{ 1, 1 };
-
-#endif
-
 
     friend class TestKFPassiveSuspension;
 

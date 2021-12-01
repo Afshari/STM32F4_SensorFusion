@@ -192,6 +192,7 @@ bool TestBase::checkEqual(const Matrix &value1, const Matrix &value2, float tole
 }
 
 #ifdef USE_CMSIS_DSP
+
 bool TestBase::checkEqualArmMatrix(arm_matrix_instance_f32 value1, arm_matrix_instance_f32 value2, float tolerance, std::string msg) {
 
 	bool isEqual = true;
@@ -213,8 +214,10 @@ bool TestBase::checkEqualArmMatrix(arm_matrix_instance_f32 value1, arm_matrix_in
 		printf("FAILURE: %s\r\n", msg.c_str());
 	}
 
-
 	return isEqual;
 }
+
+
+
 #endif
 

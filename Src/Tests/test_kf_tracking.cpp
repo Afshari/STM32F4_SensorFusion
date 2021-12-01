@@ -15,123 +15,6 @@ void TestKFTracking::init() {
 }
 
 
-#ifdef USE_CMSIS_DSP
-
-void TestKFTracking::testInitialize() {
-
-	bool status = false;
-	float matrixTolerance = 0.01;
-
-	vector<double> data = { 0, 0, 0.1, 0.1, 0.1, 1 };
-	kf.initialize(data);
-
-	arm_matrix_instance_f32 x;
-	arm_matrix_instance_f32 A;
-	arm_matrix_instance_f32 H;
-	arm_matrix_instance_f32 Q;
-	arm_matrix_instance_f32 R;
-	arm_matrix_instance_f32 P;
-
-
-	float32_t t_x[] = { 0, 0, 0, 0 };
-	arm_mat_init_f32(&x, 4, 1, (float32_t *)t_x);
-	status = checkEqualArmMatrix(kf.x, x, matrixTolerance, "There is Problem in KalmanFilter initialize() Function -- x Value");
-
-	float32_t t_A[] = {  1, 0, 0.1, 	0,
-											 0, 1, 0, 		0.1,
-											 0, 0, 1, 		0,
-											 0, 0, 0,		1 };
-	arm_mat_init_f32(&A, 4, 4, (float32_t *)t_A);
-	status = checkEqualArmMatrix(kf.A, A, matrixTolerance, "There is Problem in KalmanFilter initialize() Function -- A Value");
-
-
-	float32_t t_H[] = {  1, 0, 0, 0,
-					 	 0, 1, 0, 0 };
-	arm_mat_init_f32(&H, 2, 4, (float32_t *)t_H);
-	status = checkEqualArmMatrix(kf.H, H, matrixTolerance, "There is Problem in KalmanFilter initialize() Function -- H Value");
-
-
-	float32_t t_Q[] = {  2.5e-05, 	0,			5.0e-04,	0,
-					 	 0,			2.5e-05,	0, 			5.0e-04,
-						 5.0e-04,	0,			1.0e-02,	0,
-						 0,			5.0e-04, 	0, 			1.0e-02 	};
-	arm_mat_init_f32(&Q, 4, 4, (float32_t *)t_Q);
-	status = checkEqualArmMatrix(kf.Q, Q, 0.001, "There is Problem in KalmanFilter initialize() Function -- Q Value");
-
-
-	float32_t t_R[] = {  0.01,  	0,
-					 	 0,			0.01	};
-	arm_mat_init_f32(&R, 2, 2, (float32_t *)t_R);
-	status = checkEqualArmMatrix(kf.R, R, matrixTolerance, "There is Problem in KalmanFilter initialize() Function -- R Value");
-
-
-	float32_t t_P[] = {  1, 0, 0, 0,
-					 	 0, 1, 0, 0,
-						 0, 0, 1, 0,
-						 0, 0, 0, 1 };
-	arm_mat_init_f32(&P, 4, 4, (float32_t *)t_P);
-	status = checkEqualArmMatrix(kf.P, P, matrixTolerance, "There is Problem in KalmanFilter initialize() Function -- P Value");
-
-}
-
-
-void TestKFTracking::testPredict() {
-
-	bool status = false;
-	float matrixTolerance = 0.01;
-
-	vector<double> data = { 0, 0, 0.1, 0.1, 0.1, 1 };
-	kf.initialize(data);
-	kf.predict();
-
-	arm_matrix_instance_f32 x;
-	arm_matrix_instance_f32 P;
-
-
-	float32_t t_x[] = { 0, 0, 0, 0 };
-	arm_mat_init_f32(&x, 4, 1, (float32_t *)t_x);
-	status = checkEqualArmMatrix(kf.x, x, matrixTolerance, "There is Problem in KalmanFilter predict() Function -- x Value");
-
-	float32_t t_P[] = {  1.010025, 	0, 			0.1005, 	0,
-					 	 0, 		1.010025, 	0, 			0.1005,
-						 0.1005, 	0, 			1.01, 		0,
-						 0, 		0.1005, 	0, 			1.01 };
-	arm_mat_init_f32(&P, 4, 4, (float32_t *)t_P);
-	status = checkEqualArmMatrix(kf.P, P, matrixTolerance, "There is Problem in KalmanFilter predict() Function -- P Value");
-}
-
-
-void TestKFTracking::testUpdate() {
-
-	bool status = false;
-	float matrixTolerance = 0.1;
-
-	vector<double> data = { 0, 0, 0.1, 0.1, 0.1, 1 };
-	kf.initialize(data);
-	kf.predict();
-
-	vector<double> z = { 107, 298 };
-	kf.update(z);
-
-	arm_matrix_instance_f32 x;
-	arm_matrix_instance_f32 P;
-
-
-	float32_t t_x[] = { 108.07, 300.98, 10.75, 29.94 };
-	arm_mat_init_f32(&x, 4, 1, (float32_t *)t_x);
-	status = checkEqualArmMatrix(kf.x, x, matrixTolerance, "There is Problem in KalmanFilter update() Function -- x Value");
-
-	float32_t t_P[] = {	-0.0101255,		 			0.,         	-0.00100751,  0.,
-						 0.,         	-0.0101255, 	 	0.,         -0.00100751,
-						-0.00100751,  	 0.,          	 0.99989975,  0.,
-						 0.,         	-0.00100751,  	 0.,          0.99989975 };
-	arm_mat_init_f32(&P, 4, 4, (float32_t *)t_P);
-	status = checkEqualArmMatrix(kf.P, P, 0.2, "There is Problem in KalmanFilter update() Function -- P Value");
-
-}
-
-#else
-
 void TestKFTracking::testInitialize() {
 
 	bool status = false;
@@ -214,9 +97,6 @@ void TestKFTracking::testUpdate() {
 												 0.,         		-0.00100751,  	 	0.,          		0.99989975 } };
 	status = checkEqual(kf.P, P, 0.2, "There is Problem in KalmanFilter update() Function -- P Value");
 }
-
-
-#endif
 
 
 

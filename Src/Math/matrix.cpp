@@ -1,19 +1,5 @@
 
-
 #include "matrix.h"
-
-Matrix::Matrix( int row, int column ) : m_row{row}, m_column{column} {
-	m_values.resize( row * column );
-}
-
-Matrix::Matrix( int row, int column, const vector<double> &values ) : m_row{row}, m_column{column}, m_values{values} {
-}
-
-Matrix::Matrix( const Matrix &other ) {
-	this->m_row 		= other.m_row;
-	this->m_column 	= other.m_column;
-	this->m_values 	= other.m_values;
-}
 
 int Matrix::rowSize() const {
 	return m_row;
@@ -31,6 +17,129 @@ double Matrix::at(int i, int j) const {
 void Matrix::set(double value, int i, int j) {
 	int idx = (i * this->m_column) + j;
 	m_values.at(idx) = value;
+}
+
+
+#ifdef USE_CMSIS_DSP
+
+Matrix::Matrix( int row, int column ) : m_row{row}, m_column{column} {
+	m_values.resize( row * column );
+}
+
+Matrix::Matrix( int row, int column, const vector<double> &values ) : m_row{row}, m_column{column} {
+	m_values.resize( m_row * m_column );
+	std::copy(values.begin(), values.end(), m_values.begin());
+	arm_mat_init_f32(&m_matrix, m_row, m_column, m_values.data());
+}
+
+Matrix::Matrix( const arm_matrix_instance_f32 &matrix ) {
+	
+	m_row = matrix.numRows;
+	m_column = matrix.numCols;
+	m_values.resize( m_row * m_column );
+	std::copy(matrix.pData, matrix.pData + (m_row * m_column), m_values.begin());
+	arm_mat_init_f32(&m_matrix, m_row, m_column, m_values.data());
+}
+
+Matrix::Matrix( const Matrix &other ) {
+	
+	m_row = other.m_row;
+	m_column = other.m_column;
+	m_values.resize( m_row * m_column );
+	std::copy(other.m_values.begin(), other.m_values.end(), m_values.begin());
+	arm_mat_init_f32(&m_matrix, m_row, m_column, m_values.data());
+}
+
+Matrix Matrix::operator+(const Matrix &other) {
+	
+	Matrix result{ this->m_row, this->m_column };
+	
+	vector<float32_t> result_vec( result.m_row * result.m_column, 0.0 );
+	// arm_matrix_instance_f32 result_matrix;
+	arm_mat_init_f32(&result.m_matrix, result.m_row, result.m_column, result_vec.data());
+	arm_mat_add_f32(&this->m_matrix, &other.m_matrix, &result.m_matrix);
+	std::copy(result.m_matrix.pData, result.m_matrix.pData + (result.m_row * result.m_column), result.m_values.begin());
+	
+	return result;
+}
+
+Matrix Matrix::operator-(const Matrix &other) {
+	
+	Matrix result{ this->m_row, this->m_column };
+	
+	vector<float32_t> result_vec( result.m_row * result.m_column, 0.0 );
+	// arm_matrix_instance_f32 result_matrix;
+	arm_mat_init_f32(&result.m_matrix, result.m_row, result.m_column, result_vec.data());
+	arm_mat_sub_f32(&this->m_matrix, &other.m_matrix, &result.m_matrix);
+	std::copy(result.m_matrix.pData, result.m_matrix.pData + (result.m_row * result.m_column), result.m_values.begin());
+	
+	return result;
+}
+
+Matrix Matrix::operator*(const Matrix &other) {
+	
+	Matrix result{ this->m_row, other.m_column };
+	
+	vector<float32_t> result_vec( result.m_row * result.m_column, 0.0 );
+	// arm_matrix_instance_f32 result_matrix;
+	arm_mat_init_f32(&result.m_matrix, result.m_row, result.m_column, result_vec.data());
+	arm_mat_mult_f32(&this->m_matrix, &other.m_matrix, &result.m_matrix);
+	std::copy(result.m_matrix.pData, result.m_matrix.pData + (result.m_row * result.m_column), result.m_values.begin());
+	
+	return result;
+}
+
+Matrix Matrix::operator*(const double &other) {
+	
+	Matrix result{ this->m_row, this->m_column };
+
+	vector<float32_t> result_vec( result.m_row * result.m_column, 0.0 );
+	// arm_matrix_instance_f32 result_matrix;
+	arm_mat_init_f32(&result.m_matrix, result.m_row, result.m_column, result_vec.data());
+	arm_mat_scale_f32(&this->m_matrix, other, &result.m_matrix);
+	std::copy(result.m_matrix.pData, result.m_matrix.pData + (result.m_row * result.m_column), result.m_values.begin());
+	
+	return result;
+}
+
+Matrix operator*(const double &a, const Matrix &b) {
+
+	Matrix result{ b.rowSize(), b.columnSize() };
+	
+	vector<float32_t> result_vec( result.m_row * result.m_column, 0.0 );
+	// arm_matrix_instance_f32 result_matrix;
+	arm_mat_init_f32(&result.m_matrix, result.m_row, result.m_column, result_vec.data());
+	arm_mat_scale_f32(&b.m_matrix, a, &result.m_matrix);
+	std::copy(result.m_matrix.pData, result.m_matrix.pData + (result.m_row * result.m_column), result.m_values.begin());
+	
+	return result;	
+}
+
+Matrix Matrix::transpose() {
+	
+	Matrix result{ this->m_column, this->m_row };
+
+	vector<float32_t> result_vec( result.m_row * result.m_column, 0.0 );
+	arm_mat_init_f32(&result.m_matrix, result.m_row, result.m_column, result_vec.data());
+	arm_mat_trans_f32(&this->m_matrix, &result.m_matrix);
+	std::copy(result.m_matrix.pData, result.m_matrix.pData + (result.m_row * result.m_column), result.m_values.begin());
+	
+	return result;
+}
+
+#else
+
+Matrix::Matrix( int row, int column ) : m_row{row}, m_column{column} {
+	m_values.resize( row * column );
+}
+
+Matrix::Matrix( int row, int column, const vector<double> &values ) : m_row{row}, m_column{column}, m_values{values} {
+}
+
+Matrix::Matrix( const Matrix &other ) {
+	this->m_row 		= other.m_row;
+	this->m_column 	= other.m_column;
+	this->m_values 	= other.m_values;
 }
 
 Matrix Matrix::operator+(const Matrix &other) {
@@ -111,19 +220,19 @@ Matrix Matrix::transpose() {
 	return result;
 }
 
-void tran( vector<double> &A, int row, int column) {
+//void tran( vector<double> &A, int row, int column) {
 
-	vector<double> B( row * column );
+//	vector<double> B( row * column );
 
-	for (int i = 0; i < row; i++) {
-		for (int j = 0; j < column; j++) {
-			int idx_a = (i * column) + j;
-			int idx_b = (j * row) + i;
-			B.at(idx_b) = A.at(idx_a);
-		}
-	}
+//	for (int i = 0; i < row; i++) {
+//		for (int j = 0; j < column; j++) {
+//			int idx_a = (i * column) + j;
+//			int idx_b = (j * row) + i;
+//			B.at(idx_b) = A.at(idx_a);
+//		}
+//	}
 
-	std::copy(std::begin(B), std::end(B), std::begin(A));
-}
+//	std::copy(std::begin(B), std::end(B), std::begin(A));
+//}
 
-
+#endif

@@ -1,15 +1,15 @@
 
-#ifndef _TEST_INPUT_LINALG_H_
-#define _TEST_INPUT_LINALG_H_
+#ifndef _TEST_MATRIX_H_
+#define _TEST_MATRIX_H_
 
 #include <assert.h>
 #include "Tests/test_base.h"
 #include "matrix.h"
 
-class TestLinearAlgebra : public TestBase {
+class TestMatrix : public TestBase {
 
 public:
-	TestLinearAlgebra();
+	TestMatrix();
 
 	void init();
 	void testAdd();
@@ -26,4 +26,4 @@ public:
 
 };
 
-#endif /* _TEST_INPUT_LINALG_H_ */
+#endif /* _TEST_MATRIX_H_ */

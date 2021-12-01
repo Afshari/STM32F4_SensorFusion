@@ -1,9 +1,3 @@
-/*
- * app.h
- *
- *  Created on: Oct 26, 2021
- *      Author: mohsen
- */
 
 #ifndef _INC_APP_H_
 #define _INC_APP_H_

@@ -1,12 +1,12 @@
 
-#include "Tests/test_linear_algebra.h"
+#include "Tests/test_matrix.h"
 
-TestLinearAlgebra::TestLinearAlgebra() : TestBase() {
+TestMatrix::TestMatrix() : TestBase() {
 
 }
 
 
-void TestLinearAlgebra::init() {
+void TestMatrix::init() {
 
 	testAdd();
 	testSub();
@@ -20,15 +20,29 @@ void TestLinearAlgebra::init() {
 	testTran_2();
 	testTran_3();
 
+#ifdef USE_CMSIS_DSP
+	
+	arm_matrix_instance_f32 I;
+	float32_t t_I[] = {  1, 0, 2,
+											 0, 1, 3 };
+	arm_mat_init_f32(&I, 2, 3, (float32_t *)t_I);
+	Matrix _I { I };
+	checkEqual( _I.m_row, 2, " ");
+	checkEqual( _I.m_column, 3, " ");
+	checkEqualArmMatrix( _I.m_matrix, I, 0.1, " " );
+	
+#endif
+	
 	printReport("Linear Algebra");
 }
 
 
-void TestLinearAlgebra::testAdd() {
+void TestMatrix::testAdd() {
 											
 	Matrix ref_C{ 3, 3, { 5,  10, 6,
 												8,  10, 13,
 												13, 4,  5 } };
+												
 	Matrix A{ 3, 3, { 1, 2, 3,
 										4, 5, 6,
 										7, 2, 2 } };
@@ -40,8 +54,7 @@ void TestLinearAlgebra::testAdd() {
 	checkEqual( C, ref_C, 0.1, " " );										
 }
 
-
-void TestLinearAlgebra::testSub() {
+void TestMatrix::testSub() {
 	
 	Matrix ref_C{ 3, 3, {   -3,  -6, 	 0,
 													 0,  	0,  -1,
@@ -57,8 +70,7 @@ void TestLinearAlgebra::testSub() {
 	checkEqual( C, ref_C, 0.1, " ");
 }
 
-
-void TestLinearAlgebra::testScale_1() {
+void TestMatrix::testScale_1() {
 
 	Matrix ref_C{ 3, 3, {   2.5,  	5, 	 		7.5,
 													10,  		12.5,  	15,
@@ -71,7 +83,7 @@ void TestLinearAlgebra::testScale_1() {
 	checkEqual( C, ref_C, 0.01, " " );
 }
 
-void TestLinearAlgebra::testScale_2() {
+void TestMatrix::testScale_2() {
 		
 	Matrix ref_C{ 3, 3, {   2.5,  	5, 	 		7.5,
 													10,  		12.5,  	15,
@@ -84,8 +96,7 @@ void TestLinearAlgebra::testScale_2() {
 	checkEqual( C, ref_C, 0.01, " " );
 }
 
-
-void TestLinearAlgebra::testMul_1() {
+void TestMatrix::testMul_1() {
 	
 	Matrix ref_C{ 3, 3, { 30, 24, 26,
 												72, 69, 65,
@@ -101,7 +112,7 @@ void TestLinearAlgebra::testMul_1() {
 	checkEqual( C, ref_C, 0.01, " " );
 }
 
-void TestLinearAlgebra::testMul_2() {
+void TestMatrix::testMul_2() {
 		
 	Matrix ref_C{ 3, 1, { 30,
 												72,
@@ -118,7 +129,7 @@ void TestLinearAlgebra::testMul_2() {
 }
 
 
-void TestLinearAlgebra::testMul_3() {
+void TestMatrix::testMul_3() {
 	
 	Matrix ref_C{ 3, 3, { 4,  8,  12,
 												4,  8,  12,
@@ -132,7 +143,7 @@ void TestLinearAlgebra::testMul_3() {
 	checkEqual( C, ref_C, 0.01, " " );
 }
 
-void TestLinearAlgebra::testMul_4() {
+void TestMatrix::testMul_4() {
 	
 	Matrix ref_C{ 1, 1, { 30 } };
 	Matrix A{ 1, 3, { 1, 2, 3 } };
@@ -144,7 +155,7 @@ void TestLinearAlgebra::testMul_4() {
 	checkEqual( C, ref_C, 0.01, " " );
 }
 
-void TestLinearAlgebra::testTran_1() {
+void TestMatrix::testTran_1() {
 		
 	Matrix ref_Transpose{ 3, 3, { 1, 4, 7,
 																2, 5, 8,
@@ -152,11 +163,13 @@ void TestLinearAlgebra::testTran_1() {
 	Matrix A{3, 3, {  1, 2, 3,
 										4, 5, 6,
 										7, 8, 2 } };
-	checkEqual( A.transpose(), ref_Transpose, 0.01, " " );
+	
+	Matrix AT = A.transpose();
+	checkEqual( AT, ref_Transpose, 0.01, " Transpose Problem " );
 }
 
 
-void TestLinearAlgebra::testTran_2() {
+void TestMatrix::testTran_2() {
 		
 	Matrix ref_Transpose{ 2, 3, { 1, 4, 7,
 																2, 5, 6 } };
@@ -166,7 +179,7 @@ void TestLinearAlgebra::testTran_2() {
 	checkEqual( A.transpose(), ref_Transpose, 0.01, " " );
 }
 
-void TestLinearAlgebra::testTran_3() {
+void TestMatrix::testTran_3() {
 		
 	Matrix ref_Transpose{ 1, 3, { 1, 4, 7 } };
 	Matrix A{ 3, 1, { 1,
@@ -174,7 +187,6 @@ void TestLinearAlgebra::testTran_3() {
 										7, } };
 	checkEqual( A.transpose(), ref_Transpose, 0.01, " " );
 }
-
 
 
 

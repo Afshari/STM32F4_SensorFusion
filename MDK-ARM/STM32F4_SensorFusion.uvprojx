@@ -884,9 +884,9 @@
               <FilePath>..\Src\Tests\test_network_data_handler.cpp</FilePath>
             </File>
             <File>
-              <FileName>test_linear_algebra.cpp</FileName>
+              <FileName>test_matrix.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\Src\Tests\test_linear_algebra.cpp</FilePath>
+              <FilePath>..\Src\Tests\test_matrix.cpp</FilePath>
             </File>
             <File>
               <FileName>test_recursive_least_squares.cpp</FileName>
