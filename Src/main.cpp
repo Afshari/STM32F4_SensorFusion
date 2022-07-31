@@ -147,7 +147,6 @@ static void StartThread(void const * argument)
   Netif_Config();
 	tcp_server_init(network_response_handler);
   
-  
   /* Notify user about the network interface config */
   // User_notification(&gnetif);
 
@@ -167,13 +166,17 @@ static string network_response_handler(struct pbuf *p) {
 	NetworkDataStatus status = network_data_handler.process(str);
 	if(status == NetworkDataStatus::Complete) {
 
-		string result = app_handler.processData(network_data_handler.getProcessedData());
+		string data = network_data_handler.getProcessedData();
+		string result = app_handler.processData(data);
 
-		// printf("Result: %s", result.c_str());
+		//printf("Result: %s\r\n", result.c_str());
+		//printf("Result Len: %d\r\n", result.length());
 
+		pbuf_free(p);
+		p = pbuf_alloc(PBUF_RAW, result.length(), PBUF_POOL);
 		p->payload = (void *) result.c_str();
-		p->len = result.length();
-		p->tot_len = result.length();
+		//p->len = result.length();
+		//p->tot_len = result.length();
 	}
 
 	return "";

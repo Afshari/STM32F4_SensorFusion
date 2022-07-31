@@ -62,7 +62,7 @@ void tcp_server_init(function<string (struct pbuf*)> _response_handler) {
     err_t err;
 
     /* bind pcb to port 7 (protocol) */
-    err = tcp_bind(tcp_server_pcb, IP_ADDR_ANY, 5555);
+    err = tcp_bind(tcp_server_pcb, IP_ADDR_ANY, 5091);
 
     if (err == ERR_OK)
     {

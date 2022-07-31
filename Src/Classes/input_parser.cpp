@@ -95,7 +95,30 @@ shared_ptr<vector<double>> InputParser::getVector4d(const string &data) {
     return result;
 }
 
+shared_ptr<vector<Matrix>> InputParser::getObservations(const string& data, int start_index, int len) {
 
+    string token = data.substr(start_index, len);
+    auto indices = getIndices(token, ";");
+
+    vector<Matrix> observations;
+
+    string currObservation = "";
+    for(auto i = 0U; i < indices->size(); i++) {
+
+        if(i < indices->size() - 1) {
+            currObservation = token.substr( indices->at(i), indices->at(i + 1) - indices->at(i) - 1 );
+        } else {
+            currObservation = token.substr( indices->at(i), token.length() );
+        }
+        auto idx = getIndices(currObservation, ",");
+        float x = std::stof( currObservation.substr( (*idx)[0], (*idx)[1] - (*idx)[0] - 1 ) );
+        float y = std::stof( currObservation.substr( (*idx)[1], currObservation.length() - (*idx)[1] ) );
+
+        observations.push_back( Matrix{ 2, 1, { x, y } } );
+    }
+
+    return make_shared<vector<Matrix>>( observations );
+}
 
 
 

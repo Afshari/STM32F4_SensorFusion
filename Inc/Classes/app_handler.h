@@ -29,6 +29,8 @@ protected:
 	unique_ptr<RecursiveLeastSquares> 	rls;
 	unique_ptr<KFPassiveSuspension> 		kf_passive_suspension;
 
+	void addExtra(string& str, int len=250);
+
 };
 
 #endif /* _APP_HANDLER_H_ */

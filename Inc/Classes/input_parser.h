@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "app.h"
+#include "matrix.h"
 
 using std::shared_ptr;
 using std::make_shared;
@@ -24,6 +25,7 @@ public:
 	virtual shared_ptr<vector<int>> getIndices(const string& data, const string& delimiter);
 	virtual shared_ptr<vector<double>> getDataVector(const string& data, int start_index, int len);
 	virtual shared_ptr<vector<double>> getVector4d(const string &data);
+	virtual shared_ptr<vector<Matrix>> getObservations(const string& data, int start_index, int len);
 
 };
 

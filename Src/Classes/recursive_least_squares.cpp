@@ -56,6 +56,5 @@ void RecursiveLeastSquares::calculate(const vector<double> &params) {
 
 	// P = P - K @ H @ P
 	P = P - K * H * P;
-
 }
 

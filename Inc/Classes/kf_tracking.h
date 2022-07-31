@@ -31,7 +31,7 @@ public:
 
 	virtual void initialize(const vector<double> &params);
 	virtual void predict();
-	virtual void update(const vector<double> &z);
+	virtual void update(Matrix& z);
 	virtual Matrix getX();
 
 private:

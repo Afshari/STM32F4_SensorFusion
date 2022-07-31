@@ -15,6 +15,7 @@ public:
 	void testGetCode();
 	void testGetIndices();
 	void testGetDataVector();
+	void testGetObservations();
 
 protected:
 	InputParser inputParser;

@@ -30,10 +30,10 @@ void TestKFPassiveSuspension::testInitialize() {
 	Matrix R { 1, 1, { 1e-6 } };
 
 	Matrix P { 4, 4, {
-									 1,     	0,      0,      0,
-									 0,     	1,      0,      0,
-									 0,     	0,      1,      0,
-									 0,     	0,      0,      1 } };
+									 0.1,     	0,      0,      0,
+									 0,     	  0,      0,      0,
+									 0,     	  0,      0,      0,
+									 0,     	  0,      0,      0 } };
 
 	Matrix F { 4, 4, {
 									 0.9998,    0.0004,    0.0010,   -0.0010,
@@ -42,17 +42,17 @@ void TestKFPassiveSuspension::testInitialize() {
 									 0.3739,   -0.8856,    0.0098,    0.9897 	} };
 
 	Matrix Q { 4, 4, {
-									 0.0000,    0.0000,   -0.0000,   -0.0000,
-									 0.0000,    0.2233,   -0.0001,   -0.1276,
-									-0.0000,   -0.0001,    0.0000,    0.0000,
-									-0.0000,   -0.1276,    0.0000,    0.0875 	} };
+					 1.63548e-014,  4.73331e-011, -1.86411e-014, -3.64586e-011,
+					 4.73331e-011,  2.23307e-007, -5.38845e-011, -1.27616e-007,
+					-1.86411e-014, -5.38845e-011,  2.12471e-014,  4.15337e-011,
+					-3.64586e-011, -1.27616e-007,  4.15337e-011,  8.74985e-008 	} };
 
-	status = checkEqual(kf_passive_suspension.x, x, matrixTolerance, "");
-	status = checkEqual(kf_passive_suspension.H, H, matrixTolerance, "");
-	status = checkEqual(kf_passive_suspension.R, R, matrixTolerance, "");
-	status = checkEqual(kf_passive_suspension.P, P, matrixTolerance, "");
-	status = checkEqual(kf_passive_suspension.F, F, matrixTolerance, "");
-	status = checkEqual(kf_passive_suspension.Q, Q, matrixTolerance, "");
+	status = checkEqual(kf_passive_suspension.x, x, matrixTolerance, "Initialize x Not Match");
+	status = checkEqual(kf_passive_suspension.H, H, matrixTolerance, "Initialize H Not Match");
+	status = checkEqual(kf_passive_suspension.R, R, matrixTolerance, "Initialize R Not Match");
+	status = checkEqual(kf_passive_suspension.P, P, matrixTolerance, "Initialize P Not Match");
+	status = checkEqual(kf_passive_suspension.F, F, matrixTolerance, "Initialize F Not Match");
+	status = checkEqual(kf_passive_suspension.Q, Q, matrixTolerance, "Initialize Q Not Match");
 
 }
 

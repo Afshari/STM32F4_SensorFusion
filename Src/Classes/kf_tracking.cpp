@@ -1,3 +1,4 @@
+
 #include "kf_tracking.h"
 
 
@@ -71,10 +72,10 @@ void KFTracking::predict() {
 }
 
 
-void KFTracking::update(const vector<double> &t_z) {
+void KFTracking::update(Matrix& z) {
 
-	Matrix z { 2, 1, {  t_z.at(0), 
-											t_z.at(1) } };
+	//Matrix z { 2, 1, {  t_z.at(0), 
+	//										t_z.at(1) } };
 	
 	// S = H @ P @ H.T + R
 	Matrix S = H * P * H.transpose() + R;
@@ -89,18 +90,15 @@ void KFTracking::update(const vector<double> &t_z) {
 	Matrix SI { 2, 2, { d, -b, 
 										 -c, a } };
 	SI = SI * det;
-
 										 
 	// K = P @ H.T @ inv(S)
 	Matrix K = P * H.transpose() * SI;
-
 										 
 	// x = x + K @ (z - H @ x)
 	x = x + K * ( z - H * x );
 
 	// P = (I - (K @ H)) @ P
 	P = ( I - (K * H) ) * P;
-
 }
 
 

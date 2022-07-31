@@ -85,7 +85,8 @@ void TestKFTracking::testUpdate() {
 	kf.initialize(data);
 	kf.predict();
 
-	vector<double> z = { 107, 298 };
+	//vector<double> z = { 107, 298 };
+	Matrix z { 2, 1, { 107, 298 } };
 	kf.update(z);
 
 	Matrix x = { 4, 1, { 105.90, 295.01, 10.50, 29.3 } };
