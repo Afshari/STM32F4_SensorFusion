@@ -35,18 +35,12 @@ void KFTracking::initialize(const vector<double> &params) {
 	this->H = { 2, 4, { 1, 0, 0, 0,
 											0, 1, 0, 0 } };
 
-	//	Q =	  [(dt^4)/4, 		0, 						 (dt^3)/2, 		 0],
-	//		  	[0, 				  (dt^4)/4, 		 0, 					 (dt^3)/2],
-	//	      [(dt^3)/2, 		0, 				 		 dt^2, 		 			0],
-	//	      [0, 				  (dt^3)/2, 		 0, 	 		 			dt^2]]) * std_acc^2
 	this->Q = { 4, 4, {  std::pow(this->dt, 4)/4, 	0,												std::pow(this->dt, 3)/2,	0,
 											 0,													std::pow(this->dt, 4)/4,	0,												std::pow(this->dt, 3)/2,
 											 std::pow(this->dt, 3)/2,		0,												std::pow(this->dt, 2),		0,
 											 0,													std::pow(this->dt, 3)/2, 	0, 												std::pow(this->dt, 2) 	} };
 	Q = Q * std::pow(process_noise, 2);
 
-	//	R = [x_std_meas**2,		0],
-	//	    [0, 				y_std_meas**2]])
 	this->R = { 2, 2, { std::pow(std_x, 2),  	0,
 											0,										std::pow(std_y, 2) }	};
 
@@ -54,7 +48,8 @@ void KFTracking::initialize(const vector<double> &params) {
 											0, 1, 0, 0,
 											0, 0, 1, 0,
 											0, 0, 0, 1 } };
-	// I = eye(4, 4);
+
+											
 	this->I = { 4, 4, {  1, 0, 0, 0,
 											 0, 1, 0, 0,
 											 0, 0, 1, 0,
@@ -73,9 +68,6 @@ void KFTracking::predict() {
 
 
 void KFTracking::update(Matrix& z) {
-
-	//Matrix z { 2, 1, {  t_z.at(0), 
-	//										t_z.at(1) } };
 	
 	// S = H @ P @ H.T + R
 	Matrix S = H * P * H.transpose() + R;

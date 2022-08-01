@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <array>
 #include <vector>
+#include <memory>
 #include <stdio.h>
 #include <stdarg.h>
 

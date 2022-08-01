@@ -4,7 +4,10 @@
 
 #include <string>
 #include <memory>
+
+#ifndef GTEST
 #include "stm32f4xx_hal.h"
+#endif
 
 #include "app.h"
 #include "input_parser.h"
@@ -13,21 +16,23 @@
 #include "kf_passive_suspension.h"
 
 using std::unique_ptr;
+using std::shared_ptr;
 using std::make_unique;
 using std::tuple;
 
 class AppHandler {
 public:
 	AppHandler();
-	void initialize();
+	void initialize(shared_ptr<InputParser> input_parser, shared_ptr<RecursiveLeastSquares> rls, 
+									shared_ptr<KFTracking> kf_tracking, shared_ptr<KFPassiveSuspension> kf_passive_suspension);
 	string processData(const string &data);
 
 
 protected:
-	unique_ptr<InputParser>   					input_parser;
-	unique_ptr<KFTracking> 							kf_gps_tracking;
-	unique_ptr<RecursiveLeastSquares> 	rls;
-	unique_ptr<KFPassiveSuspension> 		kf_passive_suspension;
+	shared_ptr<InputParser>   					input_parser;
+	shared_ptr<KFTracking> 							kf_tracking;
+	shared_ptr<RecursiveLeastSquares> 	rls;
+	shared_ptr<KFPassiveSuspension> 		kf_passive_suspension;
 
 	void addExtra(string& str, int len=250);
 

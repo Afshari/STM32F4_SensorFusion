@@ -27,6 +27,10 @@ static void StartThread(void const * argument);
 static string network_response_handler(struct pbuf *p);
 NetworkDataHandler network_data_handler;
 AppHandler app_handler;
+shared_ptr<InputParser> input_parser;
+shared_ptr<KFTracking> kf_tracking;
+shared_ptr<RecursiveLeastSquares> rls;
+shared_ptr<KFPassiveSuspension> kf_passive_suspension;
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -48,6 +52,11 @@ int main(void)
 	testsRunner.run();
 #endif
 	
+	input_parser = make_shared<InputParser>();
+	kf_tracking = make_shared<KFTracking>();
+	rls = make_shared<RecursiveLeastSquares>();
+	kf_passive_suspension = make_shared<KFPassiveSuspension>();
+	app_handler.initialize(input_parser, rls, kf_tracking, kf_passive_suspension);
 	
     /* Init thread */
 #if defined(__GNUC__)
@@ -169,14 +178,9 @@ static string network_response_handler(struct pbuf *p) {
 		string data = network_data_handler.getProcessedData();
 		string result = app_handler.processData(data);
 
-		//printf("Result: %s\r\n", result.c_str());
-		//printf("Result Len: %d\r\n", result.length());
-
 		pbuf_free(p);
 		p = pbuf_alloc(PBUF_RAW, result.length(), PBUF_POOL);
 		p->payload = (void *) result.c_str();
-		//p->len = result.length();
-		//p->tot_len = result.length();
 	}
 
 	return "";

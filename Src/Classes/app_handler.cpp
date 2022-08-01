@@ -3,16 +3,16 @@
 
 AppHandler::AppHandler() {
 
-	initialize();
+	//initialize();
 }
 
+void AppHandler::initialize(shared_ptr<InputParser> input_parser, shared_ptr<RecursiveLeastSquares> rls, 
+	shared_ptr<KFTracking> kf_tracking, shared_ptr<KFPassiveSuspension> kf_passive_suspension) {
 
-void AppHandler::initialize() {
-
-	input_parser = make_unique<InputParser>();
-	kf_gps_tracking =	make_unique<KFTracking>();
-	rls = make_unique<RecursiveLeastSquares>();
-	kf_passive_suspension = make_unique<KFPassiveSuspension>();
+	this->input_parser = input_parser;
+	this->kf_tracking = kf_tracking;
+	this->rls = rls;
+	this->kf_passive_suspension = kf_passive_suspension;
 }
 
 string AppHandler::processData(const string &data) {
@@ -28,7 +28,6 @@ string AppHandler::processData(const string &data) {
 
 	if(code == 100) {
 		vector<double> params = *input_parser->getDataVector(data, start_index, len);
-		rls = make_unique<RecursiveLeastSquares>();
 		rls->initialize(params);
 		Matrix x = rls->getX();
 		outputStr += std::to_string(x.at(0, 0)) + "," + std::to_string(x.at(1, 0));
@@ -42,17 +41,16 @@ string AppHandler::processData(const string &data) {
 		
 	} else if(code == 110) {
 		vector<double> params = *input_parser->getDataVector(data, start_index, len);
-		kf_gps_tracking =	make_unique<KFTracking>();
-		kf_gps_tracking->initialize(params);
-		Matrix x = kf_gps_tracking->getX();
+		kf_tracking->initialize(params);
+		Matrix x = kf_tracking->getX();
 		outputStr += std::to_string(x.at(0, 0)) + "," + std::to_string(x.at(1, 0));
 		addExtra(outputStr);
 	} else if(code == 111) {
 		vector<Matrix> measurements = *input_parser->getObservations(data, start_index, len);
 		for(auto z : measurements) {
-			kf_gps_tracking->predict();
-			kf_gps_tracking->update(z);
-			Matrix x = kf_gps_tracking->getX();
+			kf_tracking->predict();
+			kf_tracking->update(z);
+			Matrix x = kf_tracking->getX();
 			if(outputStr != "")
 				outputStr += ";";
 			outputStr += std::to_string(x.at(0, 0)) + "," + std::to_string(x.at(1, 0));

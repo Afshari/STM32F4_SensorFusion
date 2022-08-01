@@ -3,6 +3,7 @@
 #
 
 MDK-ARM/DebugConfig
+gtests/build
 
 # User-specific uVision files
 *.opt
