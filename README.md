@@ -73,10 +73,10 @@ $ .\gTestSensorFusion.exe
 ```
 
 ### 7. Dependencies
-[Embedded App Interface](https://github.com/Afshari/Embedded_App_Interface)
+To see the results of the Embedded Device, I used "[Embedded App Interface](https://github.com/Afshari/Embedded_App_Interface)." For more information, you can see the Github page. 
 
 ### 8. Demonstration Video
-You can watch the [Demonstration Video](https://www.youtube.com/watch?v=eQ4uyFYzxjo) on the Youtube.
+You can watch the [Demonstration Video](https://www.youtube.com/watch?v=noIywtqTzFE) on the Youtube.
 
 ### 9. References
 ~~~
